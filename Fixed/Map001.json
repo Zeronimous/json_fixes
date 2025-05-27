@@ -1,0 +1,27 @@
+{
+    "name": "Test Map 1 Esp",
+    "events": [
+        {
+            "id": 1,
+            "code": 401,
+            "indent": 0,
+            "parameters": [
+                "Texto Español con \\\\.",
+                "more params"
+            ]
+        },
+        {
+            "id": 2,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "Opción 1 Esp",
+                "Opción 2 Espa",
+                0,
+                1,
+                2,
+                0
+            ]
+        }
+    ]
+}

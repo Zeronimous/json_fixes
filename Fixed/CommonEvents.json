@@ -1,0 +1,19 @@
+{
+    "name": "Common Events Esp",
+    "events": [
+        {
+            "id": 3,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "Este es un texto en español que es definitivamente mucho más largo que el original en inglés.",
+                "CE Choice 2",
+                "CE Choice 3",
+                0,
+                0,
+                1,
+                0
+            ]
+        }
+    ]
+}

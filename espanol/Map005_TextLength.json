@@ -1,0 +1,31 @@
+{
+    "name": "Text Length Test Esp",
+    "events": [
+        {
+            "id": 1,
+            "code": 401,
+            "indent": 0,
+            "parameters": [
+                "Esta es una oraci\u00f3n en espa\u00f1ol considerablemente m\u00e1s extensa que su contraparte original en ingl\u00e9s, dise\u00f1ada espec\u00edficamente para activar la advertencia de longitud porcentual."
+            ]
+        },
+        {
+            "id": 2,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "CortoEsp",
+                "This Spanish choice is way too long, much much longer than the English one, it should trigger the alert for sure based on percentage.",
+                "Otra opci\u00f3n m\u00e1s corta"
+            ]
+        },
+        {
+            "id": 3,
+            "code": 401,
+            "indent": 0,
+            "parameters": [
+                "Este texto en espa\u00f1ol es mucho m\u00e1s largo que el corto original y deber\u00eda activar la alarma de diferencia absoluta."
+            ]
+        }
+    ]
+}

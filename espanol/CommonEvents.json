@@ -1,0 +1,13 @@
+{
+    "name": "Common Events Esp",
+    "events": [
+        {
+            "id": 3,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "Este es un texto en espa\u00f1ol que es definitivamente mucho m\u00e1s largo que el original en ingl\u00e9s."
+            ]
+        }
+    ]
+}

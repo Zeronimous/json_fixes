@@ -1,0 +1,27 @@
+{
+    "name": "Test Map 1 Eng",
+    "events": [
+        {
+            "id": 1,
+            "code": 401,
+            "indent": 0,
+            "parameters": [
+                "English text with \\\\.",
+                "more params"
+            ]
+        },
+        {
+            "id": 2,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "Choice 1 Eng",
+                "Choice 2 Eng",
+                0,
+                1,
+                2,
+                0
+            ]
+        }
+    ]
+}

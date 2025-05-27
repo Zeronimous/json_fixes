@@ -1,0 +1,19 @@
+{
+    "name": "Common Events Eng",
+    "events": [
+        {
+            "id": 3,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "Short",
+                "CE Choice 2",
+                "CE Choice 3",
+                0,
+                0,
+                1,
+                0
+            ]
+        }
+    ]
+}

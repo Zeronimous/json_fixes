@@ -1,0 +1,46 @@
+2025-05-27 06:32:24,884 - INFO - rpg_maker_json_fixer.py:343 - Starting RPG Maker JSON correction process.
+2025-05-27 06:32:24,884 - INFO - rpg_maker_json_fixer.py:363 - Processing English file: ingles/Map005_TextLength.json
+2025-05-27 06:32:24,886 - INFO - rpg_maker_json_fixer.py:378 - Found corresponding Spanish file: espanol/Map005_TextLength.json
+2025-05-27 06:32:24,886 - INFO - rpg_maker_json_fixer.py:396 - Starting correction for Map005_TextLength.json...
+2025-05-27 06:32:24,887 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map005_TextLength.json.events[1].parameters[3]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,887 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map005_TextLength.json.events[1].parameters[4]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,887 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map005_TextLength.json.events[1].parameters[5]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,887 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map005_TextLength.json.events[1].parameters[6]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,887 - INFO - rpg_maker_json_fixer.py:267 - Path 'Map005_TextLength.json.events[1]': Processing event code 102 (Show Choices).
+2025-05-27 06:32:24,887 - INFO - rpg_maker_json_fixer.py:309 - Path 'Map005_TextLength.json.events[1] code 102': Parameters already conform to expected structure based on English choices and config.
+2025-05-27 06:32:24,887 - INFO - rpg_maker_json_fixer.py:403 - Successfully saved corrected file to: Fixed/Map005_TextLength.json
+2025-05-27 06:32:24,887 - INFO - rpg_maker_json_fixer.py:363 - Processing English file: ingles/Map001.json
+2025-05-27 06:32:24,887 - INFO - rpg_maker_json_fixer.py:378 - Found corresponding Spanish file: espanol/Map001.json
+2025-05-27 06:32:24,887 - INFO - rpg_maker_json_fixer.py:396 - Starting correction for Map001.json...
+2025-05-27 06:32:24,888 - INFO - rpg_maker_json_fixer.py:237 - Path 'Map001.json.events[0].parameters[0]': Corrected '\.' to '\\.' in Spanish string: 'Texto Español con \.' -> 'Texto Español con \\.'
+2025-05-27 06:32:24,888 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map001.json.events[0].parameters[1]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,888 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map001.json.events[1].parameters[2]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,888 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map001.json.events[1].parameters[3]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,888 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map001.json.events[1].parameters[4]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,888 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map001.json.events[1].parameters[5]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,888 - INFO - rpg_maker_json_fixer.py:267 - Path 'Map001.json.events[1]': Processing event code 102 (Show Choices).
+2025-05-27 06:32:24,888 - INFO - rpg_maker_json_fixer.py:309 - Path 'Map001.json.events[1] code 102': Parameters already conform to expected structure based on English choices and config.
+2025-05-27 06:32:24,888 - INFO - rpg_maker_json_fixer.py:403 - Successfully saved corrected file to: Fixed/Map001.json
+2025-05-27 06:32:24,888 - DEBUG - rpg_maker_json_fixer.py:408 - Skipping non-JSON file: notes.txt in ingles
+2025-05-27 06:32:24,888 - INFO - rpg_maker_json_fixer.py:363 - Processing English file: ingles/Map004_BadEsp.json
+2025-05-27 06:32:24,888 - INFO - rpg_maker_json_fixer.py:378 - Found corresponding Spanish file: espanol/Map004_BadEsp.json
+2025-05-27 06:32:24,889 - WARNING - rpg_maker_json_fixer.py:383 - Failed to decode JSON from Spanish file espanol/Map004_BadEsp.json: Expecting property name enclosed in double quotes: line 1 column 40 (char 39). Will attempt to process English data only for structure, but Spanish text will be lost for this file.
+2025-05-27 06:32:24,889 - INFO - rpg_maker_json_fixer.py:396 - Starting correction for Map004_BadEsp.json...
+2025-05-27 06:32:24,889 - WARNING - rpg_maker_json_fixer.py:135 - Path 'Map004_BadEsp.json': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,890 - INFO - rpg_maker_json_fixer.py:403 - Successfully saved corrected file to: Fixed/Map004_BadEsp.json
+2025-05-27 06:32:24,890 - INFO - rpg_maker_json_fixer.py:363 - Processing English file: ingles/Map002.json
+2025-05-27 06:32:24,890 - WARNING - rpg_maker_json_fixer.py:390 - Spanish file not found for: Map002.json. Copying English content to Fixed directory.
+2025-05-27 06:32:24,891 - INFO - rpg_maker_json_fixer.py:403 - Successfully saved corrected file to: Fixed/Map002.json
+2025-05-27 06:32:24,891 - INFO - rpg_maker_json_fixer.py:363 - Processing English file: ingles/CommonEvents.json
+2025-05-27 06:32:24,891 - INFO - rpg_maker_json_fixer.py:378 - Found corresponding Spanish file: espanol/CommonEvents.json
+2025-05-27 06:32:24,891 - INFO - rpg_maker_json_fixer.py:396 - Starting correction for CommonEvents.json...
+2025-05-27 06:32:24,891 - WARNING - rpg_maker_json_fixer.py:135 - Path 'CommonEvents.json.events[0].parameters[1]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,891 - WARNING - rpg_maker_json_fixer.py:135 - Path 'CommonEvents.json.events[0].parameters[2]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,891 - WARNING - rpg_maker_json_fixer.py:135 - Path 'CommonEvents.json.events[0].parameters[3]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,891 - WARNING - rpg_maker_json_fixer.py:135 - Path 'CommonEvents.json.events[0].parameters[4]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,891 - WARNING - rpg_maker_json_fixer.py:135 - Path 'CommonEvents.json.events[0].parameters[5]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,891 - WARNING - rpg_maker_json_fixer.py:135 - Path 'CommonEvents.json.events[0].parameters[6]': Key missing in Spanish, copying from English.
+2025-05-27 06:32:24,891 - INFO - rpg_maker_json_fixer.py:267 - Path 'CommonEvents.json.events[0]': Processing event code 102 (Show Choices).
+2025-05-27 06:32:24,891 - INFO - rpg_maker_json_fixer.py:309 - Path 'CommonEvents.json.events[0] code 102': Parameters already conform to expected structure based on English choices and config.
+2025-05-27 06:32:24,892 - INFO - rpg_maker_json_fixer.py:403 - Successfully saved corrected file to: Fixed/CommonEvents.json
+2025-05-27 06:32:24,892 - INFO - rpg_maker_json_fixer.py:410 - RPG Maker JSON correction process finished. Processed: 5 files. Corrected based on Spanish: 4 files. Copied from English (no Spanish file): 1 files.

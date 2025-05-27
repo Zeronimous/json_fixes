@@ -1,0 +1,35 @@
+{
+    "name": "Text Length Test Eng",
+    "events": [
+        {
+            "id": 1,
+            "code": 401,
+            "indent": 0,
+            "parameters": [
+                "This is a moderately long English sentence for testing purposes."
+            ]
+        },
+        {
+            "id": 2,
+            "code": 102,
+            "indent": 0,
+            "parameters": [
+                "ShortEng",
+                "Medium length English choice",
+                "Another choice",
+                0,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "id": 3,
+            "code": 401,
+            "indent": 0,
+            "parameters": [
+                "Short."
+            ]
+        }
+    ]
+}
