@@ -219,10 +219,21 @@ def correct_json_data(english_data, spanish_data, path="root"):
         if 'code' in corrected_dict and 'parameters' in corrected_dict:
             # Make sure original English/Spanish parameters are available if needed
             original_eng_params = english_dict.get('parameters') if isinstance(english_dict, dict) else None
-            original_span_params = spanish_data.get('parameters') if isinstance(spanish_data, dict) else None
+            # Pass the ORIGINAL Spanish parameters for this event to correct_event_parameters
+            original_event_spanish_params = spanish_data.get('parameters') if isinstance(spanish_data, dict) else None
             
-            if isinstance(original_eng_params, list) and isinstance(corrected_dict['parameters'], list):
-                correct_event_parameters(corrected_dict, original_eng_params, corrected_dict['parameters'], path)
+            if isinstance(original_eng_params, list) and isinstance(original_event_spanish_params, list):
+                # corrected_dict['parameters'] will be REPLACED by the result of correct_event_parameters.
+                # correct_event_parameters needs to operate on the original Spanish params for this event.
+                correct_event_parameters(corrected_dict, original_eng_params, original_event_spanish_params, path)
+            elif isinstance(original_eng_params, list) and original_event_spanish_params is None:
+                 # Spanish event might not have parameters key, or it's not a list.
+                 # In this case, English parameters (including choices) would be copied if any.
+                 # This scenario is implicitly handled by correct_event_parameters if it receives None for current_spanish_params.
+                 # However, we need to ensure it's called to potentially copy English structure.
+                 main_logger.warning(f"Path '{path}': Spanish event parameters missing or not a list. Using English parameters structure.")
+                 correct_event_parameters(corrected_dict, original_eng_params, None, path)
+
 
         return corrected_dict
 
@@ -261,66 +272,97 @@ def correct_event_parameters(corrected_event, english_params, current_spanish_pa
     Modifies corrected_event['parameters'] directly.
     """
     code = corrected_event.get('code')
-    original_english_params_for_warning = list(english_params) # Keep a copy for warnings
+    # english_params is the original English parameters list.
+    # current_spanish_params is the original Spanish parameters list for this event.
+    
+    # If current_spanish_params is None (e.g. Spanish event had no 'parameters' key or was not a list),
+    # initialize it as an empty list to simplify logic downstream.
+    # The goal is to prioritize English structure if Spanish parameters are entirely missing.
+    if current_spanish_params is None:
+        current_spanish_params = []
+
+    original_english_params_for_text_warning = list(english_params) # Keep a copy for text length warnings
+    old_params_for_logging = list(corrected_event['parameters']) # Params after initial recursive correct_json_data
 
     if code == 102: # Show Choices
         main_logger.info(f"Path '{event_path}': Processing event code 102 (Show Choices).")
         
-        # Determine number of choices in English parameters
         n_eng_choices = 0
-        for param in english_params:
+        for param in english_params: # Use original english_params to determine structure
             if isinstance(param, str):
                 n_eng_choices += 1
             else:
-                break # End of string choices
-
-        if n_eng_choices == 0 and len(english_params) > 0: # Edge case: No string choices but other params
-             main_logger.warning(f"Path '{event_path} code {code}': English event has no initial string choices, but has parameters. Parameter list length correction might apply if Spanish differs.")
+                break
         
         english_config_params = english_params[n_eng_choices:]
         
-        spanish_choices = []
-        num_spanish_params_taken_for_choices = 0
-        for i in range(len(current_spanish_params)):
-            if i < n_eng_choices and isinstance(current_spanish_params[i], str):
-                spanish_choices.append(current_spanish_params[i])
-                num_spanish_params_taken_for_choices +=1
-            elif i >= n_eng_choices: # Stop if we have enough choices or current param is not a string when one is expected
+        actual_spanish_choices = []
+        for param in current_spanish_params: # Iterate through original Spanish params
+            if isinstance(param, str):
+                actual_spanish_choices.append(param)
+            else:
+                # Stop collecting Spanish choices if a non-string is encountered,
+                # assuming these are the start of config-like parameters in the Spanish data.
                 break 
-            elif not isinstance(current_spanish_params[i], str): # Spanish param is not string but english one was
-                 main_logger.warning(f"Path '{event_path} code {code}': Spanish parameter at index {i} is not a string, while English choice was expected. Stopping choice gathering.")
-                 break
+        
+        num_actual_spanish_choices = len(actual_spanish_choices)
 
+        if num_actual_spanish_choices < n_eng_choices:
+            main_logger.warning(
+                f"Path '{event_path} code {code}': Spanish file has fewer choices ({num_actual_spanish_choices}) "
+                f"than English ({n_eng_choices}). Using all available Spanish choices and English config parameters."
+            )
+        elif num_actual_spanish_choices > n_eng_choices:
+            main_logger.warning(
+                f"Path '{event_path} code {code}': Spanish file has more choices ({num_actual_spanish_choices}) "
+                f"than English originally had ({n_eng_choices}). Using all Spanish choices. "
+                "This may require manual review as English configuration parameters might not align as expected or could be missing."
+            )
+            # If Spanish has more choices, we prioritize them all. The english_config_params might then be misaligned or irrelevant.
+            # For this case, the requirement is "spanish_choices + english_config_params".
+            # This means if Spanish has 3 choices and English had 2 (plus config), the new list will have 3 Spanish choices
+            # followed by the original English config (which might make less sense but follows the rule).
 
-        if len(spanish_choices) < n_eng_choices:
-            main_logger.warning(f"Path '{event_path} code {code}': Spanish file has fewer choices ({len(spanish_choices)}) than English ({n_eng_choices}). Using available Spanish choices.")
-
-        # Text length warnings for choices
-        for i in range(len(spanish_choices)):
-            if i < len(original_english_params_for_warning): # Ensure there's a corresponding English choice
+        # Text length warnings for the actual Spanish choices used
+        for i in range(num_actual_spanish_choices):
+            if i < n_eng_choices: # Compare with corresponding English choice if it exists
                 choice_path_context = f"{event_path}.parameters[{i}] (Choice text)"
-                _log_text_length_warning(original_english_params_for_warning[i], spanish_choices[i], choice_path_context)
+                _log_text_length_warning(original_english_params_for_text_warning[i], actual_spanish_choices[i], choice_path_context)
+            # No else needed; if Spanish has more choices, we can't warn against a non-existent English choice.
 
-        new_parameters = spanish_choices + english_config_params
-        if new_parameters != corrected_event['parameters']:
-            main_logger.info(f"Path '{event_path} code {code}': Corrected. Parameters changed from {corrected_event['parameters']} to {new_parameters}")
+        new_parameters = actual_spanish_choices + english_config_params
+        
+        if new_parameters != old_params_for_logging: # Compare with parameters state before this function
+            main_logger.info(
+                f"Path '{event_path} code {code}': Corrected. Using {num_actual_spanish_choices} Spanish choices and {len(english_config_params)} English config parameters. "
+                f"Old: {old_params_for_logging}, New: {new_parameters}"
+            )
             corrected_event['parameters'] = new_parameters
         else:
-            main_logger.info(f"Path '{event_path} code {code}': Parameters already conform to expected structure based on English choices and config.")
-        return # Handled by code 102 logic
+            main_logger.info(f"Path '{event_path} code {code}': Parameters already conform. Using {num_actual_spanish_choices} Spanish choices and {len(english_config_params)} English config. Current: {new_parameters}")
+        return
+
+    # --- Handling for other event codes (including 401 text length warning) ---
     
     # Text length warning for code 401 (Show Text)
-    if code == 401:
-        if current_spanish_params and isinstance(current_spanish_params[0], str) and \
-           original_english_params_for_warning and isinstance(original_english_params_for_warning[0], str):
-            text_path_context = f"{event_path}.parameters[0] (Show Text)"
-            _log_text_length_warning(original_english_params_for_warning[0], current_spanish_params[0], text_path_context)
+    # This should use current_spanish_params[0] as it's the "final" value after recursive correct_json_data
+    # on the string itself (for \. fix etc.)
+    # However, current_spanish_params passed to this function is the *original* Spanish param list.
+    # The `corrected_event['parameters']` is the list *after* `correct_json_data` has processed its elements.
+    final_spanish_params_for_event = corrected_event['parameters']
 
-    # General parameter list length correction for other event codes
-    # Or for code 102 if its own logic didn't fully align (e.g. Spanish had even fewer total params than choices + config)
-    if len(current_spanish_params) < len(english_params):
-        missing_params_count = len(english_params) - len(current_spanish_params)
-        tail_english_params = english_params[len(current_spanish_params):]
+    if code == 401:
+        if final_spanish_params_for_event and isinstance(final_spanish_params_for_event[0], str) and \
+           original_english_params_for_text_warning and isinstance(original_english_params_for_text_warning[0], str):
+            text_path_context = f"{event_path}.parameters[0] (Show Text)"
+            _log_text_length_warning(original_english_params_for_text_warning[0], final_spanish_params_for_event[0], text_path_context)
+
+    # General parameter list length correction for other event codes (non-102)
+    # This uses the parameters list that has already been recursively processed by correct_json_data
+    # because we want to preserve any detailed fixes (like string escapes) made within that list.
+    if len(final_spanish_params_for_event) < len(english_params):
+        missing_params_count = len(english_params) - len(final_spanish_params_for_event)
+        tail_english_params = english_params[len(final_spanish_params_for_event):]
         
         # Heuristic: append if tail params are mostly numbers, booleans, or short non-narrative strings
         append_tail = True
